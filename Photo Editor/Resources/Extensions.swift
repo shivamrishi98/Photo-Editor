@@ -28,4 +28,26 @@ extension UIImage {
         
         return self
     }
+    
+    func addBlur(radius value:Float) -> UIImage {
+        let filter = CIFilter(name: "CIBoxBlur")
+        
+        let ciInput = CIImage(image: self)
+        
+        filter?.setValue(ciInput,
+                         forKey: "inputImage")
+        filter?.setValue(value,
+                         forKey: "inputRadius")
+        
+        if let ciOutput = filter?.outputImage, let ciInput = ciInput  {
+            
+            if let cgImage = UIImage.ciContext.createCGImage(ciOutput,
+                                                             from: (ciInput.extent)){
+                return UIImage(cgImage: cgImage)
+            }
+        }
+        
+        return self
+    }
+    
 }

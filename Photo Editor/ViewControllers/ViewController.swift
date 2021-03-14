@@ -11,8 +11,14 @@ class ViewController: UIViewController {
 
     private var viewModels = [FilterViewModel]()
     private var currentOriginalImage:UIImage?
+    private var currentFilteredImage:UIImage?
     private var selectedFilterIndex:Int = -1
 
+    private let addOnFiltersView:AddOnFiltersView = {
+        let view = AddOnFiltersView()
+        view.isHidden = true
+        return view
+    }()
     
     private let imageView:UIImageView = {
          let imageView = UIImageView()
@@ -68,9 +74,12 @@ class ViewController: UIViewController {
         view.addSubview(imageView)
         view.addSubview(noImageLabel)
         view.addSubview(collectionView)
+        view.addSubview(addOnFiltersView)
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        addOnFiltersView.delegate = self
         
         setupViewModels()
         
@@ -83,7 +92,6 @@ class ViewController: UIViewController {
                             style: .plain,
                             target: self,
                             action: #selector(didTapSaveToPhotoLibraryButton))
-            
         ]
         
     }
@@ -123,8 +131,10 @@ class ViewController: UIViewController {
                                         DispatchQueue.main.async {
                                             self?.imageView.image = nil
                                             self?.currentOriginalImage = nil
+                                            self?.currentFilteredImage = nil
                                             self?.collectionView.isHidden = true
                                             self?.noImageLabel.isHidden = false
+                                            self?.addOnFiltersView.isHidden = true
                                         }
                                       }))
         present(alert,
@@ -185,6 +195,11 @@ class ViewController: UIViewController {
                                       width: view.frame.size.width,
                                       height: 150)
         
+        addOnFiltersView.frame = CGRect(x: 0,
+                                        y: (collectionView.frame.size.height + collectionView.frame.origin.y),
+                                        width: view.frame.size.width,
+                                        height: (view.frame.size.height-view.safeAreaInsets.top-imageView.frame.size.height-150))
+        
         noImageLabel.frame = CGRect(x: 0,
                                     y: 0,
                                     width: view.frame.size.width,
@@ -232,11 +247,14 @@ extension ViewController:UIImagePickerControllerDelegate,UINavigationControllerD
             return
         }
         currentOriginalImage = image
+        currentFilteredImage = image
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.isHidden = false
             self?.imageView.isHidden = false
             self?.noImageLabel.isHidden = true
             self?.imageView.image = image
+            self?.addOnFiltersView.isHidden = false
+            self?.addOnFiltersView.blurSlider.value = 0
         }
         
     }
@@ -273,11 +291,28 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
             let viewModel = viewModels[indexPath.row]
             selectedFilterIndex = indexPath.row
             DispatchQueue.main.async { [weak self] in
-                self?.imageView.image = image.addFilter(filter: viewModel.filterType)
+                let filteredImage = image.addFilter(filter: viewModel.filterType)
+                self?.currentFilteredImage = filteredImage
+                self?.imageView.image = filteredImage
+                self?.addOnFiltersView.blurSlider.value = 0
             }
         }
         
         
     }
     
+}
+
+extension ViewController:AddOnFiltersViewDelegate{
+    
+    func addOnFiltersView(_ addOnView: AddOnFiltersView, radius value: Float) {
+        
+        guard let image = currentFilteredImage else {
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.imageView.image = image.addBlur(radius: value)
+        }
+    }
 }
