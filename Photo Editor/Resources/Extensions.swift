@@ -50,4 +50,25 @@ extension UIImage {
         return self
     }
     
+    func adjustSharpness(sharpness value:Float) -> UIImage {
+        let filter = CIFilter(name: "CISharpenLuminance")
+        
+        let ciInput = CIImage(image: self)
+        
+        filter?.setValue(ciInput,
+                         forKey: "inputImage")
+        filter?.setValue(value,
+                         forKey: "inputSharpness")
+        
+        if let ciOutput = filter?.outputImage, let ciInput = ciInput  {
+            
+            if let cgImage = UIImage.ciContext.createCGImage(ciOutput,
+                                                             from: (ciInput.extent)){
+                return UIImage(cgImage: cgImage)
+            }
+        }
+        
+        return self
+    }
+    
 }

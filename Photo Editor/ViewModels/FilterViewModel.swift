@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 enum FilterType:String {
+    case Sepia = "CISepiaTone"
     case Chrome = "CIPhotoEffectChrome"
     case Fade = "CIPhotoEffectFade"
     case Mono = "CIPhotoEffectMono"
@@ -19,6 +20,8 @@ enum FilterType:String {
     var title:String {
         switch self {
         
+        case .Sepia:
+            return "Sepia"
         case .Chrome:
             return "Chrome"
         case .Fade:
@@ -31,6 +34,7 @@ enum FilterType:String {
             return "Transfer"
         case .Noir:
             return "Noir"
+            
         }
     }
 }

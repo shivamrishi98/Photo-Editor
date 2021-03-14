@@ -213,7 +213,8 @@ class ViewController: UIViewController {
         guard let demoImage = UIImage(named: "demo") else {
             return
         }
-
+        viewModels.append(FilterViewModel(image: demoImage.addFilter(filter: .Sepia),
+                                          filterType: .Sepia))
         viewModels.append(FilterViewModel(image: demoImage.addFilter(filter: .Chrome),
                                           filterType: .Chrome))
         viewModels.append(FilterViewModel(image: demoImage.addFilter(filter: .Fade),
@@ -255,6 +256,7 @@ extension ViewController:UIImagePickerControllerDelegate,UINavigationControllerD
             self?.imageView.image = image
             self?.addOnFiltersView.isHidden = false
             self?.addOnFiltersView.blurSlider.value = 0
+            self?.addOnFiltersView.sharpenSlider.value = 0
         }
         
     }
@@ -295,6 +297,7 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
                 self?.currentFilteredImage = filteredImage
                 self?.imageView.image = filteredImage
                 self?.addOnFiltersView.blurSlider.value = 0
+                self?.addOnFiltersView.sharpenSlider.value = 0
             }
         }
         
@@ -305,14 +308,27 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
 
 extension ViewController:AddOnFiltersViewDelegate{
     
-    func addOnFiltersView(_ addOnView: AddOnFiltersView, radius value: Float) {
+    func addOnFiltersViewBlurEffect(_ addOnView: AddOnFiltersView,radius value: Float) {
         
         guard let image = currentFilteredImage else {
             return
         }
         
         DispatchQueue.main.async { [weak self] in
-            self?.imageView.image = image.addBlur(radius: value)
+            let filteredImage = image.addBlur(radius: value)
+            self?.imageView.image = filteredImage
         }
+    }
+    
+    func addOnFiltersViewSharpness(_ addOnView: AddOnFiltersView, sharpness value: Float) {
+        guard let image = currentFilteredImage else {
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            let filteredImage = image.adjustSharpness(sharpness: value)
+            self?.imageView.image = filteredImage
+        }
+        
     }
 }
