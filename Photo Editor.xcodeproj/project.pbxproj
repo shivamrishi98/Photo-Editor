@@ -15,6 +15,7 @@
 		960FC5BA25FD220200F489F2 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960FC5B925FD220200F489F2 /* FilterViewModel.swift */; };
 		960FC5BF25FD221B00F489F2 /* DemoFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960FC5BE25FD221B00F489F2 /* DemoFilterCollectionViewCell.swift */; };
 		960FC5C725FD228F00F489F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960FC5C625FD228F00F489F2 /* Extensions.swift */; };
+		964492BF25FE58AE00B68D4D /* TestFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964492BE25FE58AE00B68D4D /* TestFilterViewController.swift */; };
 		96F99FBD25FDE0C60036FEEC /* AddOnFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F99FBC25FDE0C60036FEEC /* AddOnFiltersView.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		960FC5B925FD220200F489F2 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
 		960FC5BE25FD221B00F489F2 /* DemoFilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		960FC5C625FD228F00F489F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		964492BE25FE58AE00B68D4D /* TestFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFilterViewController.swift; sourceTree = "<group>"; };
 		96F99FBC25FDE0C60036FEEC /* AddOnFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOnFiltersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				960FC5A525FCF73B00F489F2 /* ViewController.swift */,
+				964492BE25FE58AE00B68D4D /* TestFilterViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 			files = (
 				960FC5A625FCF73B00F489F2 /* ViewController.swift in Sources */,
 				960FC5C725FD228F00F489F2 /* Extensions.swift in Sources */,
+				964492BF25FE58AE00B68D4D /* TestFilterViewController.swift in Sources */,
 				96F99FBD25FDE0C60036FEEC /* AddOnFiltersView.swift in Sources */,
 				960FC5BF25FD221B00F489F2 /* DemoFilterCollectionViewCell.swift in Sources */,
 				960FC5A225FCF73B00F489F2 /* AppDelegate.swift in Sources */,

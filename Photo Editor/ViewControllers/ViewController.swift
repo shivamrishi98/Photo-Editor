@@ -10,10 +10,12 @@ import UIKit
 class ViewController: UIViewController {
 
     private var viewModels = [FilterViewModel]()
-    private var currentOriginalImage:UIImage?
-    private var currentFilteredImage:UIImage?
+//    private var currentOriginalImage:UIImage?
+//    private var currentFilteredImage:UIImage?
     private var selectedFilterIndex:Int = -1
-
+   
+    private var origImage:UIImage!
+    
     private let addOnFiltersView:AddOnFiltersView = {
         let view = AddOnFiltersView()
         view.isHidden = true
@@ -130,8 +132,8 @@ class ViewController: UIViewController {
                                       handler: { [weak self] _ in
                                         DispatchQueue.main.async {
                                             self?.imageView.image = nil
-                                            self?.currentOriginalImage = nil
-                                            self?.currentFilteredImage = nil
+//                                            self?.currentOriginalImage = nil
+//                                            self?.currentFilteredImage = nil
                                             self?.collectionView.isHidden = true
                                             self?.noImageLabel.isHidden = false
                                             self?.addOnFiltersView.isHidden = true
@@ -247,13 +249,14 @@ extension ViewController:UIImagePickerControllerDelegate,UINavigationControllerD
         guard let image = info[.editedImage] as? UIImage else {
             return
         }
-        currentOriginalImage = image
-        currentFilteredImage = image
+        origImage = image
+//        currentOriginalImage = image
+//        currentFilteredImage = image
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.isHidden = false
             self?.imageView.isHidden = false
             self?.noImageLabel.isHidden = true
-            self?.imageView.image = image
+            self?.imageView.image = self?.origImage
             self?.addOnFiltersView.isHidden = false
             self?.addOnFiltersView.blurSlider.value = 0
             self?.addOnFiltersView.sharpenSlider.value = 0
@@ -285,7 +288,11 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        guard let image = currentOriginalImage else {
+//        guard let image = currentOriginalImage else {
+//            return
+//        }
+        
+        guard let image = imageView.image else {
             return
         }
         
@@ -294,7 +301,7 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
             selectedFilterIndex = indexPath.row
             DispatchQueue.main.async { [weak self] in
                 let filteredImage = image.addFilter(filter: viewModel.filterType)
-                self?.currentFilteredImage = filteredImage
+//                self?.currentFilteredImage = filteredImage
                 self?.imageView.image = filteredImage
                 self?.addOnFiltersView.blurSlider.value = 0
                 self?.addOnFiltersView.sharpenSlider.value = 0
@@ -309,8 +316,8 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
 extension ViewController:AddOnFiltersViewDelegate{
     
     func addOnFiltersViewBlurEffect(_ addOnView: AddOnFiltersView,radius value: Float) {
-        
-        guard let image = currentFilteredImage else {
+
+        guard let image = imageView.image else {
             return
         }
         
@@ -321,7 +328,7 @@ extension ViewController:AddOnFiltersViewDelegate{
     }
     
     func addOnFiltersViewSharpness(_ addOnView: AddOnFiltersView, sharpness value: Float) {
-        guard let image = currentFilteredImage else {
+        guard let image = imageView.image else {
             return
         }
         
